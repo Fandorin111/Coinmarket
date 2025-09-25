@@ -1,0 +1,25 @@
+import requests
+
+# вставь свой API-ключ сюда
+API_KEY = "YOUR_API_KEY"
+url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+
+headers = {
+    "Accepts": "application/json",
+    "X-CMC_PRO_API_KEY": API_KEY,
+}
+
+parameters = {
+    "start": "1",       # с какой монеты начинать (1 = Bitcoin)
+    "limit": "5",       # сколько монет показать
+    "convert": "USD"    # в какой валюте показывать цену
+}
+
+response = requests.get(url, headers=headers, params=parameters)
+data = response.json()
+
+for crypto in data["data"]:
+    name = crypto["name"]
+    symbol = crypto["symbol"]
+    price = crypto["quote"]["USD"]["price"]
+    print(f"{name} ({symbol}): ${price:.2f}")
